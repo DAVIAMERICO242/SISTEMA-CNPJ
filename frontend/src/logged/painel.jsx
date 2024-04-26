@@ -191,7 +191,7 @@ export const Painel = () => {
                 setSuccess(true);
                 console.log(cnpj_data);
           })
-          .catch((error)=>{console.log(error);setLoading(false); alert('Aconteceu um erro na requisição, por favor faça o login novamente!')})
+          .catch((error)=>{console.log(error);setLoading(false); alert('Nenhum dado encontrado para os filtros selecionados, caso o problema persistir, logue e tente novamente!')})
     }
 
     const download = async (e)=>{
