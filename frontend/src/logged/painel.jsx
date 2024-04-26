@@ -67,6 +67,18 @@ function getCurrentDateTimeString() {
     return `${day}_${month}_${year}_${hour}h${minute}m`;
 }
 
+function compare( a, b, key="label" ) {
+    if(a.hasOwnProperty(key) && b.hasOwnProperty(key)){
+        if ( a[key] < b[key]){
+            return -1;
+          }
+          if ( a[key] > b[key] ){
+            return 1;
+          }
+    }
+    return 0;
+  }
+
 
 
 
@@ -92,7 +104,7 @@ export const Painel = () => {
                 setBRStates((prev)=>[...prev,{value: [uf.sigla,uf.id], label:uf.nome}])
             });
             console.log('estados')
-            setBRStates((prev)=>{console.log(prev); return remove_array_object_duplicates(prev,"label")});
+            setBRStates((prev)=>{console.log(prev); return remove_array_object_duplicates(prev,"label").sort((a,b)=>compare(a,b,"label"))});
             setStatesLoading(false);
         })
     },[]);
@@ -112,7 +124,7 @@ export const Painel = () => {
                             }else{
                                 return false;
                             }
-                        }))
+                        })).sort((a,b)=>compare(a,b,"label"))
                     );
                 });
                 setCitiesLoading(false);
@@ -132,7 +144,7 @@ export const Painel = () => {
             CNAE_data_unique_major_classes.map((cnae)=>{
                 setCNAEs((prev)=>[...prev,{value: cnae.id, label: cnae.descricao}]);
             });
-            setCNAEs((prev)=>remove_array_object_duplicates(prev));
+            setCNAEs((prev)=>remove_array_object_duplicates(prev).sort((a,b)=>compare(a,b,"label")));
             setCnaesLoading(false);
         })
 
