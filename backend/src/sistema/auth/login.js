@@ -2,7 +2,7 @@ require('dotenv').config();
 const login_router = require('express').Router()
 const jwt = require('jsonwebtoken');
 const secretKey = '32RK342TG90354NGYT30NH'; // Change this to a secure random key
-const users = [{'admin':'896321574'}]
+const users = [{'admin':'896321574'},{'comercial':'Skyler@1997'}]
 
 login_router.post('/auth', async (req, res) => {
     console.log('entrou');
