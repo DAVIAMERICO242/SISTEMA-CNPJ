@@ -2,6 +2,8 @@ import {useState,useEffect} from 'react';
 import Select from 'react-select'
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import CircularProgress from '@mui/material/CircularProgress';
+
 const BACKEND_URL = (import.meta.env.VITE_PROD_ENV==='TRUE')?(`https://${import.meta.env.VITE_BACKEND_PROXY}`):(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}`)
 
 function remove_array_object_duplicates(array_obj,key="value"){//[obj1,obj2,...]
@@ -69,6 +71,9 @@ function getCurrentDateTimeString() {
 
 
 export const Painel = () => {
+    const [statesLoading,setStatesLoading] = useState(true);
+    const [citiesLoading, setCitiesLoading] = useState(false);
+    const [cnaesLoading, setCnaesLoading] = useState(false);
     const [BRStates,setBRStates] = useState([]);
     const [selectedStates, setSelectedStates] = useState([]);
     const [availableCities,setAvailableCities] = useState([]);
@@ -85,12 +90,16 @@ export const Painel = () => {
         .then((uf_data)=>{
             uf_data.map((uf)=>{
                 setBRStates((prev)=>[...prev,{value: [uf.sigla,uf.id], label:uf.nome}])
-            })
+            });
+            console.log('estados')
+            setBRStates((prev)=>{console.log(prev); return remove_array_object_duplicates(prev,"label")});
+            setStatesLoading(false);
         })
     },[]);
 
     useEffect(()=>{//api cidades
         if(selectedStates.length){
+            setCitiesLoading(true);
             const pattern_state_ids = selectedStates.map((e)=>e[1]).join("|");
             fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${pattern_state_ids}/distritos`).then((data)=>data.json())
             .then((cidade_data)=>{
@@ -106,6 +115,7 @@ export const Painel = () => {
                         }))
                     );
                 });
+                setCitiesLoading(false);
             });
         }else{
             setAvailableCities([]);
@@ -113,6 +123,7 @@ export const Painel = () => {
     },[selectedStates]);
 
     useEffect(()=>{//api CNAE geral
+        setCnaesLoading(true);
         fetch("https://servicodados.ibge.gov.br/api/v2/cnae/subclasses").then((data)=>data.json())
         .then((CNAE_data)=>{
             var CNAE_data_unique_major_classes = remove_array_object_duplicates(remove_array_object_duplicates_deep1(CNAE_data),"id").sort((a, b) => parseInt(a.id) - parseInt(b.id));
@@ -122,6 +133,7 @@ export const Painel = () => {
                 setCNAEs((prev)=>[...prev,{value: cnae.id, label: cnae.descricao}]);
             });
             setCNAEs((prev)=>remove_array_object_duplicates(prev));
+            setCnaesLoading(false);
         })
 
     },[]);
@@ -227,16 +239,18 @@ export const Painel = () => {
                     <div className="generic_label">
                         Estados:
                     </div>
-                    <div style={{width: '300px'}}>
-                        <Select style={{width: '300px'}}  className="basic-multi-select" classNamePrefix="select" isMulti options={BRStates} onChange={(e)=>manage_selected_states(e)} />
+                    <div style={{width: '300px'}} className="relative">
+                        {statesLoading?<CircularProgress className="loading_ui"/>:null}
+                        <Select style={{width: '300px'}}  className={"basic-multi-select " + (statesLoading?'loading':'')} classNamePrefix="select" isMulti options={BRStates} onChange={(e)=>manage_selected_states(e)} />
                     </div>
                 </div>
                 <div>
                     <div className="generic_label">
                         Cidades:
                     </div>
-                    <div style={{width: '300px'}}>
-                        <Select style={{width: '300px'}} className="basic-multi-select" classNamePrefix="select" isMulti options={availableCities} onChange={(e)=>manage_selected_cities(e)} />
+                    <div style={{width: '300px'}} className="relative">
+                        {citiesLoading?<CircularProgress className="loading_ui"/>:null}
+                        <Select style={{width: '300px'}} className={"basic-multi-select " + (citiesLoading?'loading':'')} classNamePrefix="select" isMulti options={availableCities} onChange={(e)=>manage_selected_cities(e)} />
                     </div>
                 </div>
             </div>
@@ -251,8 +265,9 @@ export const Painel = () => {
                     <div className="generic_label">
                         Atividade (CNAE):
                     </div>
-                    <div style={{width: '300px'}}>
-                        <Select style={{width: '300px'}} className="basic-multi-select" classNamePrefix="select" isMulti options={CNAEs} onChange={(e)=>manage_selected_cnaes(e)} />
+                    <div style={{width: '300px'}} className="relative">
+                        {cnaesLoading?<CircularProgress className="loading_ui"/>:null}
+                        <Select style={{width: '300px'}} className={"basic-multi-select " + (cnaesLoading?'loading':'')} classNamePrefix="select" isMulti options={CNAEs} onChange={(e)=>manage_selected_cnaes(e)} />
                     </div>
                 </div>
             </div>

@@ -104,3 +104,16 @@ img{
   right: 10px;
   top: 10px;
 }
+
+.relative{
+  position: relative;
+}
+
+.loading_ui{
+  position: absolute;
+  z-index: 999999;
+  left: 43%;
+  top: 5px;
+  width: 25px !important;
+  height: 25px !important;
+}
