@@ -12,7 +12,7 @@ function get_cnpj_API_data(page,ufs,cidades, bairros = [], atividades=[]){
             console.log('USER AGENT');
             console.log(random_user_agent);
             console.log('RANDOM PROXY');
-            console.log(random_proxy.proxy.origin);
+            console.log(random_proxy?.proxy?.origin);
             fetch('https://api.casadosdados.com.br/v2/public/cnpj/search', {//dados pagina 3
                 agent: random_proxy,
                 method: 'POST',

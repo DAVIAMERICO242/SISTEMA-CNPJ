@@ -29,6 +29,10 @@ function get_cnpj_XPATH_data(cnpj,current_cnpj_data){
                 }
             })
             .then(response => {
+                    console.log('PROXY BEM SUCEDIDO AO PEGAR TELEFONE');
+                    console.log(random_proxy?.proxy?.origin);
+                    console.log('USE AGENT BEM SUCEDIDO AO PEGAR TELEFONE');
+                    console.log(random_user_agent);
                     return response.text(); // Reading response as text
             })
             .then(html => {
@@ -46,7 +50,10 @@ function get_cnpj_XPATH_data(cnpj,current_cnpj_data){
                 );
                 // Faça algo com os dados recebidos
             }).catch(error => {
-                console.log(error);
+                console.log('PROXY MAL SUCEDIDO AO PEGAR TELEFONE');
+                console.log(random_proxy?.proxy?.origin);
+                console.log('USE AGENT MAL SUCEDIDO AO PEGAR TELEFONE');
+                console.log(random_user_agent);
                 console.log('foi cnpj particular erro')
                 reject(null);
             });

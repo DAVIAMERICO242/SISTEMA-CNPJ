@@ -41,7 +41,6 @@ function get_all_cnpj_data(n_pages,ufs,cidades, bairros, atividades){
                                             "NUMERO": current_cnpj_data['numero'] || 'nao encontrado'
                                             
                                         });
-                                        console.log(future_excel)
                                         return future_excel;
                                         // console.log(future_excel.length)
                                     }).catch(()=>null);
@@ -50,7 +49,7 @@ function get_all_cnpj_data(n_pages,ufs,cidades, bairros, atividades){
                             }
                         }
     
-                    }).catch(()=>console.log('instabilidade'));// é a pagina atual nao cnpj atual
+                    }).catch((error)=>{console.log('instabilidade');console.log(error)});// é a pagina atual nao cnpj atual
                 }catch(error){
                     console.log('instabilidade na requisição');
                 }

@@ -48,8 +48,10 @@ cnpj_routes.post('/cnpj_data', async (req,res)=>{
         }
         console.log('OUTPUT');
         console.log(output);
-        if(!output){
+        if(output===false){
             return res.status(500).send('falha');
+        }else if(output===null){
+            return res.status(400).send('falha');
         }
         return res.status(200).send(output);
     }catch(error){
