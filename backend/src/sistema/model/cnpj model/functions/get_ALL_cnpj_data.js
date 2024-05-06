@@ -17,7 +17,7 @@ function get_all_cnpj_data(n_pages,ufs,cidades, bairros, atividades){
                     var get_cnpj_API_data_promise = get_cnpj_API_data(i,ufs,cidades, bairros, atividades);
                     cnpj_data_promises.push(get_cnpj_API_data_promise);
                     get_cnpj_API_data_promise.then((current_page_data)=>{
-                        // console.log('deu')
+                        console.log('deu')
                         if(current_page_data?.length){
                             for(let j=0;j<=current_page_data.length;j++){
                                 var current_cnpj_data = current_page_data[j];
