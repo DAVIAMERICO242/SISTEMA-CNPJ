@@ -3,17 +3,21 @@ const fetch = require('node-fetch');
 const {getRandomProxy} = require('../../proxy-list/random-proxy')
 
 function get_cnpj_API_data(page,ufs,cidades, bairros = [], atividades=[]){
-    console.log('DADOS DA REQUISIÇÃO');
-    console.log([page,ufs,cidades,bairros,atividades]);
-    console.log('USER AGENT');
-    console.log(getRandomUserAgent());
     return new Promise((resolve,reject)=>{
         try{
+            var random_proxy = getRandomProxy();
+            var random_user_agent = getRandomUserAgent();
+            console.log('DADOS DA REQUISIÇÃO');
+            console.log([page,ufs,cidades,bairros,atividades]);
+            console.log('USER AGENT');
+            console.log(random_user_agent);
+            console.log('RANDOM PROXY');
+            console.log(random_proxy.proxy.origin);
             fetch('https://api.casadosdados.com.br/v2/public/cnpj/search', {//dados pagina 3
-                agent: getRandomProxy(),
+                agent: random_proxy,
                 method: 'POST',
                 headers: {
-                    'User-Agent': getRandomUserAgent(),
+                    'User-Agent': random_user_agent,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({

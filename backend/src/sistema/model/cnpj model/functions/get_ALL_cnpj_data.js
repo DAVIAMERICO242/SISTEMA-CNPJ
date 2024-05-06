@@ -40,7 +40,8 @@ function get_all_cnpj_data(n_pages,ufs,cidades, bairros, atividades){
                                             "LOGRADOURO": current_cnpj_data['logradouro'] || 'nao encontrado',
                                             "NUMERO": current_cnpj_data['numero'] || 'nao encontrado'
                                             
-                                        })
+                                        });
+                                        console.log(future_excel)
                                         return future_excel;
                                         // console.log(future_excel.length)
                                     }).catch(()=>null);

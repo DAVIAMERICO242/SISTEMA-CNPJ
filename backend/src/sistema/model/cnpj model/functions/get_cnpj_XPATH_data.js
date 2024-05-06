@@ -18,11 +18,13 @@ function get_cnpj_XPATH_data(cnpj,current_cnpj_data){
     return new Promise((resolve,reject)=>{
         a = '54258001000160';
         try{
+            var random_proxy = getRandomProxy();
+            var random_user_agent = getRandomUserAgent();
             fetch(`https://casadosdados.com.br/solucao/cnpj/${cnpj}`,{
-                agent: getRandomProxy(),
+                agent: random_proxy,
                 method:"GET",
                 headers: {
-                    'User-Agent': getRandomUserAgent(),
+                    'User-Agent': random_user_agent,
                     'Content-Type': 'application/json'
                 }
             })
