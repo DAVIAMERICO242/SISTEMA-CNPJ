@@ -22,7 +22,7 @@ process.on('uncaughtException', (err) => {
 app.use(bodyParser.json({ limit: '200mb' }));
 app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 app.use(cors({
-    origin: FRONTEND_URL,
+    origin: '*', // Permite qualquer origem
     credentials: true
   }));
 
